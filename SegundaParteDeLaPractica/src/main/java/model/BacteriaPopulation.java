@@ -13,6 +13,11 @@ public class BacteriaPopulation implements Comparable<BacteriaPopulation> {
         this.startDate = startDate;
         this.initialBacteriaCount = initialBacteriaCount;
         this.foodPattern = foodPattern;
+        this.name = name;
+
+    }
+
+    public BacteriaPopulation(String populationName, FoodPattern foodPattern) {
     }
 
     public String getName() {

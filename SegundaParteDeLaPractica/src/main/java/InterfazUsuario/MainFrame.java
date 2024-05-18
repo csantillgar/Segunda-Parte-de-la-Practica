@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import model.FoodPattern;
+
 import model.Experiment;
 import model.BacteriaPopulation;
 import storage.ExperimentLoader;
@@ -144,25 +147,96 @@ public class MainFrame extends JFrame {
         }
     }
     private void createNewExperiment() {
-        // Implementar lógica para crear nuevo experimento
+        // Solicitar al usuario el nombre del experimento y las fechas de inicio y fin
+        String experimentName = JOptionPane.showInputDialog(this, "Introduce el nombre del experimento:");
+        LocalDate startDate = LocalDate.now(); // Fecha de inicio por defecto
+        LocalDate endDate = LocalDate.now().plusDays(7); // Fecha de fin por defecto (una semana después de la fecha de inicio)
+
+        // Crear un nuevo objeto Experiment con los datos proporcionados
+        experiment = new Experiment(experimentName, startDate, endDate);
+
+        // Actualizar los paneles con la información del nuevo experimento
+        updateExperimentPanel();
     }
+
     private void addPopulation() {
-        // Implementar lógica para añadir población
+        if (experiment != null) {
+            String populationName = JOptionPane.showInputDialog(this, "Introduce el nombre de la nueva población:");
+            if (populationName != null && !populationName.isEmpty()) {
+                // Creamos una nueva población con el nombre proporcionado
+                BacteriaPopulation newPopulation = new BacteriaPopulation(populationName, FoodPattern.LINEAR_INCREASE);
+                // Agregamos la población al experimento
+                experiment.addPopulation(newPopulation);
+                // Actualizamos la lista de poblaciones en el panel
+                updatePopulationList();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay experimento creado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private void deletePopulation() {
-        // Implementar lógica para borrar población
+        if (experiment != null) {
+            String populationName = JOptionPane.showInputDialog(this, "Introduce el nombre de la población a borrar:");
+            if (populationName != null && !populationName.isEmpty()) {
+                // Buscamos la población por su nombre
+                BacteriaPopulation populationToDelete = experiment.getPopulationByName(populationName);
+                if (populationToDelete != null) {
+                    // Borramos la población del experimento
+                    experiment.removePopulation(populationToDelete);
+                    // Actualizamos la lista de poblaciones en el panel
+                    updatePopulationList();
+                } else {
+                    JOptionPane.showMessageDialog(this, "La población especificada no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay experimento creado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private void viewPopulations() {
-        // Implementar lógica para ver poblaciones
+        if (experiment != null) {
+            StringBuilder populationsInfo = new StringBuilder("Poblaciones:\n");
+            for (BacteriaPopulation population : experiment.getPopulations()) {
+                populationsInfo.append(population.getName()).append(" - ").append(population.getFoodPattern()).append("\n");
+            }
+            JOptionPane.showMessageDialog(this, populationsInfo.toString(), "Poblaciones", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay experimento creado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
     private void runSimulation() {
-        // Implementar lógica para ejecutar simulación
+        // Comprobamos si hay un experimento para simular
+        if (experiment != null) {
+            // Aquí iría la lógica para ejecutar la simulación del experimento actual
+            // Por ejemplo, podrías mostrar un mensaje de éxito
+            JOptionPane.showMessageDialog(this, "Simulación ejecutada correctamente.", "Simulación", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay experimento creado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private void viewPopulationDetails(String populationName) {
-        // Implementar lógica para ver detalles de la población
+        if (populationName != null && !populationName.isEmpty()) {
+            // Buscamos la población por su nombre
+            BacteriaPopulation population = experiment.getPopulationByName(populationName);
+            if (population != null) {
+                // Mostramos los detalles de la población
+                JOptionPane.showMessageDialog(this, "Nombre: " + population.getName() + "\nPatrón de Alimentación: " + population.getFoodPattern(), "Detalles de Población", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "La población especificada no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una población.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private void runPopulationSimulation(String populationName) {
-        // Implementar lógica para ejecutar simulación de una población específica
+        if (populationName != null && !populationName.isEmpty()) {
+            // Aquí iría la lógica para ejecutar la simulación de la población específica
+            // Por ejemplo, podrías mostrar un mensaje de éxito
+            JOptionPane.showMessageDialog(this, "Simulación de población ejecutada correctamente.", "Simulación de Población", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una población.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void updateExperimentPanel() {

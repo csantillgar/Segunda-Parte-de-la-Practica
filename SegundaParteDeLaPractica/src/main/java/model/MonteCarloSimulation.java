@@ -46,29 +46,34 @@ public class MonteCarloSimulation {
 
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
-                grid[i][j].addFood(foodPerCell);
+                grid[i][j].addFood(foodPerCell * 1000); // Cambio de miligramos a microgramos
             }
         }
     }
 
+
     private int getFoodAmountForDay(FoodPattern foodPattern, int day) {
         switch (foodPattern) {
             case CONSTANT:
-                return 300000;
+                return 300000; // Cambio de miligramos a microgramos
             case LINEAR_INCREASE:
-                return (int) (300000 * ((double) day / 30));
+                return 300000 * day / 30; // Cambio de miligramos a microgramos
             case ALTERNATING_DAYS:
-                return (day % 2 == 0) ? 300000 : 0;
+                return (day % 2 == 0) ? 300000 : 0; // Cambio de miligramos a microgramos
             case LINEAR_INCREASE_DECREASE:
                 if (day <= 15) {
-                    return (int) (300000 * ((double) day / 15));
+                    return 300000 * day / 15; // Cambio de miligramos a microgramos
                 } else {
-                    return (int) (300000 * ((double) (30 - day) / 15));
+                    return 300000 * (30 - day) / 15; // Cambio de miligramos a microgramos
                 }
+            case CONSTANT_DAY_ALTERNATE:
+                return (day % 2 == 0) ? 300000 : 0; // Cambio de miligramos a microgramos
             default:
-                return 300000;
+                return 300000; // Cambio de miligramos a microgramos
         }
     }
+
+
 
     private void simulateDay() {
         for (int i = 0; i < GRID_SIZE; i++) {

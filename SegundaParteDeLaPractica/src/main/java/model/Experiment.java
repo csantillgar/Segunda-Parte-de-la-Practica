@@ -3,6 +3,8 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Experiment {
     private String name;
@@ -57,5 +59,29 @@ public class Experiment {
     // Método para validar que el experimento no comience después de su finalización
     public boolean isValidExperiment() {
         return !endDate.isBefore(startDate);
+    }
+
+    // Método para ordenar las poblaciones de bacterias por fecha de inicio
+    public void sortByStartDate() {
+        Collections.sort(populations, Comparator.comparing(BacteriaPopulation::getStartDate));
+    }
+
+    // Método para ordenar las poblaciones de bacterias por nombre
+    public void sortByName() {
+        Collections.sort(populations, Comparator.comparing(BacteriaPopulation::getName));
+    }
+
+    // Método para ordenar las poblaciones de bacterias por número de bacterias
+    public void sortByBacteriaCount() {
+        Collections.sort(populations, Comparator.comparingInt(BacteriaPopulation::getInitialBacteriaCount));
+    }
+
+    public BacteriaPopulation getPopulationByName(String name) {
+        for (BacteriaPopulation population : populations) {
+            if (population.getName().equals(name)) {
+                return population;
+            }
+        }
+        return null; // Devuelve null si no se encuentra ninguna población con el nombre especificado
     }
 }
