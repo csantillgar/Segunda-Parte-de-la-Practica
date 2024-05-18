@@ -25,8 +25,16 @@ public class Experiment {
         return startDate;
     }
 
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public List<BacteriaPopulation> getPopulations() {
@@ -39,5 +47,15 @@ public class Experiment {
 
     public void removePopulation(BacteriaPopulation population) {
         this.populations.remove(population);
+    }
+
+    // Método para calcular la duración del experimento en días
+    public int getDurationInDays() {
+        return (int) startDate.until(endDate).getDays();
+    }
+
+    // Método para validar que el experimento no comience después de su finalización
+    public boolean isValidExperiment() {
+        return !endDate.isBefore(startDate);
     }
 }

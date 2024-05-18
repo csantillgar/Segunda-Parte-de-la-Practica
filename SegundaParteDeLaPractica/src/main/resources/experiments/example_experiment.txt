@@ -1,4 +1,4 @@
-NombreDelExperimento
+ExperimentoEjemplo
 2024-05-18
 2024-06-17
 Poblacion1,2024-05-18,100,LINEAR_INCREASE
